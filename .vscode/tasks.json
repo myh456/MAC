@@ -10,6 +10,7 @@
                 "-g",
                 "${fileDirname}/main.cpp",
                 "${fileDirname}/mac.cpp",
+                "${fileDirname}/lib/*.cpp",
                 "-o",
                 "${fileDirname}/main.out"
             ],

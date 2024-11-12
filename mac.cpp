@@ -25,7 +25,7 @@ std::bitset<128> MAC::CMAC(std::string M) {
     bitset<128> L = SM4(this->K).enc(0);
     bitset<128> K1, K2;
     vector<bitset<128>> res;
-    // GF()乘法，可以查看AES-encryption
+    // GF域乘法，可以查看AES-encryption
     if (L.test(127)) {
         K1 = (L << 1) ^ R;
     } else {
@@ -36,7 +36,7 @@ std::bitset<128> MAC::CMAC(std::string M) {
     } else {
         K2 = (K1 << 1);
     }
-    if (M.size() % 16) {
+    if (M.size() % 16 == 0) {
         // 正好可以完成分组时不填充，使用K1
         Padding pd = Padding(PaddingMode::NoPadding);
         Operation op = Operation(this->K, OperationMode::CBC);

@@ -1,6 +1,25 @@
 // 和SM3-hash一样的，把utility.cpp的代码整进来了
 #include "sm3.hpp"
 
+
+template <size_t N>
+std::bitset<N> operator+(const std::bitset<N>& lhs, const std::bitset<N>& rhs) {
+    std::bitset<N> result;
+    bool carry = false;
+
+    for (size_t i = 0; i < N; ++i) {
+        bool bit1 = lhs[i];
+        bool bit2 = rhs[i];
+
+        bool sum = bit1 ^ bit2 ^ carry;
+        carry = (bit1 && bit2) || (carry && (bit1 ^ bit2));
+
+        result[i] = sum;
+    }
+
+    return result;
+}
+
 #define LLL(bs, pos, n) bitset<n>((bs) << (pos % n) | (bs) >> (n - (pos % n)))
 #define FF0(X, Y, Z) ((X) ^ (Y) ^ (Z))
 #define FF1(X, Y, Z) ((((X) & (Y)) | ((X) & (Z)) | ((Y) & (Z))))
@@ -131,22 +150,4 @@ SM3::SM3() {
 
 bitset<256> SM3::hash(string str) {
     return this->compression(this->padding(str));
-}
-
-template <size_t N>
-std::bitset<N> operator+(const std::bitset<N>& lhs, const std::bitset<N>& rhs) {
-    std::bitset<N> result;
-    bool carry = false;
-
-    for (size_t i = 0; i < N; ++i) {
-        bool bit1 = lhs[i];
-        bool bit2 = rhs[i];
-
-        bool sum = bit1 ^ bit2 ^ carry;
-        carry = (bit1 && bit2) || (carry && (bit1 ^ bit2));
-
-        result[i] = sum;
-    }
-
-    return result;
 }
